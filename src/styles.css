@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'Inter Variable', sans-serif;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { @apply bg-slate-50 font-sans; }
+  body {
+    @apply m-0 min-w-80 bg-slate-50 text-slate-700 antialiased;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.09), transparent 25rem),
+      radial-gradient(circle at 88% 90%, rgba(96, 165, 250, 0.08), transparent 28rem);
+  }
+  button, textarea { font: inherit; }
+}
+
+.trace-card { @apply rounded-xl border px-4 py-3; }
+.markdown p + p { @apply mt-4; }
+.markdown ul { @apply my-3 list-disc space-y-1 pl-5; }
+.markdown ol { @apply my-3 list-decimal space-y-1 pl-5; }
+.markdown code { @apply rounded bg-blue-50 px-1.5 py-0.5 font-mono text-[0.9em] text-blue-700; }
+.markdown pre { @apply my-3 overflow-x-auto rounded-xl border border-slate-200 bg-slate-50 p-4; }
+.markdown pre code { @apply bg-transparent p-0; }
+.markdown a { @apply text-blue-600 underline decoration-blue-300 underline-offset-2; }
+.thinking-dot { @apply size-2 animate-pulse rounded-full bg-blue-600; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply rounded-full bg-slate-300; }
