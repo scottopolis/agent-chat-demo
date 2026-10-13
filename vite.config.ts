@@ -5,7 +5,7 @@ import { ToolLoopAgent, convertToModelMessages, createUIMessageStream, isStepCou
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { defineConfig, loadEnv } from 'vite';
 import { z } from 'zod';
-import { searchKnowledge } from './retrieval.js';
+import { createKnowledgeBase } from './retrieval.js';
 import type { AgentContextSnapshot } from './src/agent-context.js';
 
 const systemPrompt = `You are the customer support agent for Alien Holiday Warehouse, a fictional costume supplier in the Andromeda Galaxy.
@@ -21,19 +21,23 @@ When no passage answers the question, do not cite unrelated passages as support 
 Do not claim to issue refunds, perform repairs, or take actions. You can only explain documented information.
 This is an intro RAG demo, not a production agent. No model training occurs when documents are indexed.`;
 
-function createAgentTools(apiKey: string) {
+function createAgentTools(env: Record<string, string>) {
+  let knowledge: ReturnType<typeof createKnowledgeBase> | undefined;
   return {
     searchKnowledge: {
-      description: 'Search current public Alien Holiday Warehouse documents by meaning. Returns the top 4 original passages with source IDs and similarity scores, plus any linked operating and safety sources. Read both results and referenced sources. Results may be irrelevant; check whether they actually support the answer.',
+      description: 'Search current public Alien Holiday Warehouse documents in Pinecone using semantic search and BM25 keyword search, fused by rank and reranked by a cross-encoder. Returns the top 4 original passages with source IDs and reranker scores, plus any linked operating and safety sources. Read both results and referenced sources. Scores are not confidence or proof; check whether passages actually support the answer.',
       inputSchema: z.object({ query: z.string().min(1).max(2000).describe('A focused search question, including product names or codes when known') }),
-      execute: async ({ query }: { query: string }) => searchKnowledge(query, apiKey),
+      execute: async ({ query }: { query: string }) => {
+        knowledge ??= createKnowledgeBase(env);
+        return knowledge.search(query);
+      },
     },
   };
 }
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const tools = createAgentTools(env.OPENAI_API_KEY?.trim() ?? '');
+  const tools = createAgentTools(env);
   return {
     plugins: [react(), tailwindcss(), {
       name: 'demo-chat-api',

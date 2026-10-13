@@ -83,7 +83,7 @@ function ChatPanel() {
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 font-mono text-[11px] text-slate-500 sm:block">
-            7 public sources · semantic search
+            7 public sources · Pinecone · hybrid + reranker
           </span>
           <button
             type="button"

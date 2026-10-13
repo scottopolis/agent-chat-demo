@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "vite --port 3003",
     "build": "vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test retrieval.test.ts",
+    "index-corpus": "tsx index-corpus.ts"
   },
   "dependencies": {
     "@ai-sdk/mcp": "2.0.31",
     "@ai-sdk/openai": "4.0.41",
     "@ai-sdk/react": "4.0.68",
     "@fontsource-variable/inter": "^5.3.0",
+    "@pinecone-database/pinecone": "9.0.0",
     "@tailwindcss/vite": "4.3.3",
     "@vitejs/plugin-react": "5.2.0",
     "ai": "7.0.65",
@@ -29,6 +32,7 @@
     "@types/node": "22.18.12",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3"
   }
 }

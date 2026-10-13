@@ -15,5 +15,5 @@
     "jsx": "react-jsx",
     "types": ["vite/client", "node"]
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts", "retrieval.ts", "index-corpus.ts", "retrieval.test.ts"]
 }
