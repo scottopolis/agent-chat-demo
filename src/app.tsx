@@ -23,7 +23,7 @@ import { isAgentContextPart, type AgentContextSnapshot } from './agent-context.j
 import type { AgentToolDefinition } from './agent-tools.js';
 import { isMCPTracePart, type MCPTraceSnapshot } from './mcp-trace.js';
 
-const agentDescription = 'Ask a support question and inspect the agent’s reasoning, tools, loaded skills, and MCP calls.';
+const agentDescription = 'Ask about alien costumes. Inspect the search results and see how retrieved evidence becomes the agent’s context.';
 
 export function App() {
   return (
@@ -37,8 +37,6 @@ export function App() {
 
 function ChatPanel() {
   const [draft, setDraft] = useState('');
-  const [notionConnected, setNotionConnected] = useState(false);
-  const [notionDisconnecting, setNotionDisconnecting] = useState(false);
   const [showSystemPrompt, setShowSystemPrompt] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -47,13 +45,6 @@ function ChatPanel() {
   }), []);
   const { messages, sendMessage, status, stop, error, setMessages } = useChat({ transport });
   const busy = status === 'submitted' || status === 'streaming';
-
-  useEffect(() => {
-    void fetch('/api/mcp/status')
-      .then((response) => response.json())
-      .then((result: { connected?: boolean }) => setNotionConnected(result.connected === true))
-      .catch(() => setNotionConnected(false));
-  }, []);
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -67,17 +58,6 @@ function ChatPanel() {
     if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing) return;
     event.preventDefault();
     event.currentTarget.form?.requestSubmit();
-  }
-
-  async function disconnectNotion() {
-    setNotionDisconnecting(true);
-    try {
-      const response = await fetch('/api/mcp/disconnect', { method: 'POST' });
-      if (!response.ok) throw new Error('Could not disconnect Notion');
-      setNotionConnected(false);
-    } finally {
-      setNotionDisconnecting(false);
-    }
   }
 
   async function openSystemPrompt() {
@@ -99,11 +79,11 @@ function ChatPanel() {
       <header className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-7">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-600">Observable run</p>
-          <h1 className="mt-1 text-lg font-semibold text-slate-900">Agent</h1>
+          <h1 className="mt-1 text-lg font-semibold text-slate-900">Alien Holiday Warehouse</h1>
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 font-mono text-[11px] text-slate-500 sm:block">
-            ≤ 6 model steps · tools · skills · MCP
+            7 public sources · semantic search
           </span>
           <button
             type="button"
@@ -112,21 +92,6 @@ function ChatPanel() {
           >
             <FileTextIcon className="size-3" /> <span className="hidden sm:inline">System prompt</span>
           </button>
-          {notionConnected ? (
-            <button
-              type="button"
-              onClick={() => void disconnectNotion()}
-              disabled={notionDisconnecting}
-              className="flex items-center gap-1.5 rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1.5 text-[11px] font-medium text-fuchsia-700 transition hover:border-fuchsia-300 hover:bg-fuchsia-100 disabled:cursor-wait disabled:opacity-60"
-              title="Disconnect Notion"
-            >
-              <span className="size-1.5 rounded-full bg-fuchsia-500" /> {notionDisconnecting ? 'Disconnecting…' : 'Notion connected'}
-            </button>
-          ) : (
-            <a href="/api/mcp/connect" className="flex items-center gap-1.5 rounded-full border border-fuchsia-200 bg-white px-3 py-1.5 text-[11px] font-medium text-fuchsia-700 transition hover:bg-fuchsia-50">
-              <PlugIcon className="size-3" /> Connect Notion
-            </a>
-          )}
           <button
             type="button"
             onClick={() => setMessages([])}
@@ -166,7 +131,8 @@ function ChatPanel() {
                   value={draft}
                   onChange={(event) => setDraft(event.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask OC Power Pedals a support question…"
+                  aria-label="Support question"
+                  placeholder="Ask about alien costumes, venues, or returns…"
                   rows={2}
                   className="max-h-36 min-h-14 w-full resize-none bg-transparent px-3 py-2 text-[15px] leading-6 text-slate-900 outline-none placeholder:text-slate-400"
                 />
@@ -251,7 +217,7 @@ function AgentToolsPanel() {
           <TerminalSquareIcon className="size-4 text-blue-600" /> Agent tools
           {tools.length > 0 ? <span className="ml-auto rounded-full bg-blue-100 px-2 py-0.5 text-[10px] text-blue-700">{tools.length}</span> : null}
         </div>
-        <p className="mt-1 text-xs leading-5 text-slate-500">Tools defined by this agent. MCP tools are excluded.</p>
+        <p className="mt-1 text-xs leading-5 text-slate-500">Retrieval adds relevant source passages to the model’s context.</p>
       </div>
 
       {loadFailed ? (
@@ -331,7 +297,7 @@ function AgentToolsPanel() {
 }
 
 function EmptyState({ onPrompt }: { onPrompt: (value: string) => void }) {
-  const prompts = ['How do I pair my Eagle AXS shifter and derailleur?', 'Can I return pedals I installed last week?', 'When is the Costa Mesa store open?'];
+  const prompts = ['Can I wear SS-3 at Mosslight, and how long will it run?', 'Can my Venus mist pod refill my Neptune cape?', 'Can you repair my spaceship’s warp engine?'];
   return (
     <div className="mx-auto flex h-full max-w-xl flex-col items-center justify-center py-20 text-center">
       <span className="grid size-14 place-items-center rounded-2xl border border-blue-200 bg-blue-50 text-blue-600">
