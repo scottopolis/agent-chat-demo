@@ -5,5 +5,38 @@
   {"id":"AHW-F001","title":"Milky Way Day venue checklist","relatedIds":["AHW-P001","AHW-S001"],"content":"Status: current; effective 2026-09-20; audience: public. Mosslight Pavilion runs at 1.35 g during Milky Way Day celebrations. Cloudbladder Hall runs at 0.70 g. Both venues allow Saturn Swagger SS-3 costumes, subject to the SS-3 operating guide and current safety notices. Mosslight's venue booking does not include a DG-2 collar. The DJ's gravity jokes are not calibrated measurements."},
   {"id":"AHW-R001","title":"Public costume return policy","content":"Status: current; effective 2026-09-01; audience: public; authority: policy. Unopened costume purchases may be returned within 19 Earth-standard days of delivery. Opened Suspensium-9 cartridges are not returnable under this discretionary policy. Safety recall remedies remain available regardless of this return window. Rentals have a separate policy. Starting a new orbit does not restart the return period."},
   {"id":"AHW-P003","title":"Neptune Mood-Mist NM-7 quick start","content":"Status: current; effective 2026-09-01; audience: public. NM-7 uses Brinewink capsules, not Suspensium gel or Venus atmosphere pods. A capsule provides 64 minutes of mood mist. School mode suppresses the cape's spoken weather insults but does not change capsule life. The NM-7 Quiet Clip enables school mode. The NM-1 Quiet Clip has a different connector and is incompatible."},
-  {"id":"AHW-P004","title":"Venus Atmospheric Drama VA-6 refill guide","content":"Status: current; effective 2026-09-01; audience: public. VA-6 uses Sulfurless Sigh pods, yielding 38 minutes of theatrical atmosphere. These pods are incompatible with Neptune NM-7. Their packaging says ‘mist refill,’ but that phrase is not a cross-product compatibility guarantee. Vaping a refill voids the product warranty and the conversation."}
+  {"id":"AHW-P004","title":"Venus Atmospheric Drama VA-6 refill guide","content":"Status: current; effective 2026-09-01; audience: public. VA-6 uses Sulfurless Sigh pods, yielding 38 minutes of theatrical atmosphere. These pods are incompatible with Neptune NM-7. Their packaging says ‘mist refill,’ but that phrase is not a cross-product compatibility guarantee. Vaping a refill voids the product warranty and the conversation."},
+  {
+    "id": "AHW-C001",
+    "title": "Green Visitor GV-1 costume — demo product catalog",
+    "content": "Status: current; audience: public. Fictional demo product: Green Visitor GV-1, a green alien UFO costume with a large green head, saucer-shaped waist, and silver legs. A playful choice for an alien-themed party. Decorative costume only: the saucer does not fly, levitate, or provide protective equipment. It is not the Saturn Swagger SS-3 and has no orbital bands or Suspensium cartridge. The attached real photograph is an illustrative reference, not an actual manufactured product or an endorsement. No price, stock, size, or delivery information is available.",
+    "product": {
+      "sku": "GV-1", "name": "Green Visitor", "description": "A green alien head, flying-saucer waist, and silver legs. Decorative costume; no actual flight.",
+      "imagePath": "/images/green-visitor.jpg", "imageAlt": "A performer wearing a green alien head, saucer-shaped waist, silver trouser legs, and white shoes.",
+      "imageAuthor": "Ale Escárcega", "imageSource": "https://commons.wikimedia.org/wiki/File:Alien_en_Tepoztl%C3%A1n.jpg",
+      "imageLicense": "CC BY-SA 4.0", "imageLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+    }
+  },
+  {
+    "id": "AHW-C002",
+    "title": "Cosmic Party CP-2 costumes — demo product catalog",
+    "content": "Status: current; audience: public. Fictional demo product: Cosmic Party CP-2, coordinated alien party looks with oversized dark-eyed alien masks and monochrome outfits. A choice for friends planning a matching group costume. Decorative costume only; no electronic effects or life-support function. It is not the Cosmic Hula SS-H and has no rotating band or foam power pack. The attached real black-and-white photograph is an illustrative reference, not an actual manufactured product or an endorsement. No price, stock, size, or delivery information is available.",
+    "product": {
+      "sku": "CP-2", "name": "Cosmic Party", "description": "Coordinated dark-eyed alien masks and monochrome outfits for a matching group look.",
+      "imagePath": "/images/cosmic-party.jpg", "imageAlt": "Black-and-white photograph of three people in alien masks and coordinated costumes on a country road.",
+      "imageAuthor": "micadew", "imageSource": "https://commons.wikimedia.org/wiki/File:Alien_costumes.jpg",
+      "imageLicense": "CC BY-SA 2.0", "imageLicenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
+    }
+  },
+  {
+    "id": "AHW-C003",
+    "title": "Cosmic Jester CJ-1 costume — demo product catalog",
+    "content": "Status: current; audience: public. Fictional demo product: Cosmic Jester CJ-1, a colorful space-alien party costume with a blue cap, silver-tipped antennae, green fan-shaped collar, and purple trim. A bright theatrical alternative to a full alien mask. Decorative costume only; not a spacesuit, helmet, or protective equipment. It is not a Neptune NM-7 or Venus VA-6 mist costume and has no refill system. The attached real photograph is an illustrative reference, not an actual manufactured product or an endorsement. No price, stock, size, or delivery information is available.",
+    "product": {
+      "sku": "CJ-1", "name": "Cosmic Jester", "description": "A blue cap, silver-tipped antennae, and a bright green collar with purple trim. Decorative, not protective.",
+      "imagePath": "/images/cosmic-jester.jpg", "imageAlt": "A street performer wearing a blue cap with silver-tipped antennae and a green fan-shaped collar with purple trim.",
+      "imageAuthor": "Tim Green", "imageSource": "https://commons.wikimedia.org/wiki/File:I%27m_the_urban_spaceman_(18120617993).jpg",
+      "imageLicense": "CC BY 2.0", "imageLicenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+    }
+  }
 ]

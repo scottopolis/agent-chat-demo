@@ -5,13 +5,18 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { setTimeout } from 'node:timers/promises';
 import { z } from 'zod';
+import { productSchema } from './src/products.js';
 
-const passageSchema = z.object({ id: z.string(), title: z.string(), content: z.string(), relatedIds: z.array(z.string()).optional() });
+const passageSchema = z.object({
+  id: z.string(), title: z.string(), content: z.string(), relatedIds: z.array(z.string()).optional(),
+  // Pinecone metadata is flat; the catalog payload is stored as a JSON string.
+  product: z.preprocess(value => typeof value === 'string' ? JSON.parse(value) : value, productSchema.optional()),
+});
 const corpus = readFileSync(new URL('./corpus.json', import.meta.url), 'utf8');
 // A changed snapshot gets a new namespace, so removed sources cannot leak into searches.
 const namespace = `public-${createHash('sha256').update(corpus).digest('hex').slice(0, 16)}`;
 const reranker = 'bge-reranker-v2-m3';
-const includeFields = ['title', 'content', 'text', 'relatedIds'];
+const includeFields = ['title', 'content', 'text', 'relatedIds', 'product'];
 
 /** Indexing is explicit; chat only reads documents from Pinecone, with no local fallback. */
 export function createKnowledgeBase(env: Record<string, string>) {
@@ -43,6 +48,7 @@ export function createKnowledgeBase(env: Record<string, string>) {
       await index.documents.upsert({ documents: passages.map((p, i) => ({
         _id: p.id, title: p.title, content: p.content, relatedIds: p.relatedIds ?? [],
         text: texts[i], embedding: embeddings[i],
+        ...(p.product ? { product: JSON.stringify(p.product) } : {}),
       })) });
       // Wait for both search paths, not merely a successful write acknowledgement.
       for (let attempt = 0; attempt < 30; attempt++) {

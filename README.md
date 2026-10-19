@@ -12,7 +12,7 @@ pnpm index-corpus
 pnpm dev
 ```
 
-`pnpm index-corpus` creates the `alien-holiday-rag` Pinecone document-schema index (managed AWS us-east-1, on-demand reads) if absent, embeds the seven public sources, upserts them, and waits until both search paths can retrieve them. Set `PINECONE_INDEX_NAME` to use another compatible index. Rerun indexing after changing `corpus.json`; each snapshot has a content-hashed namespace, so removed documents cannot appear in the new snapshot. Old namespaces remain until explicitly cleaned up in Pinecone. Chat never creates an index or silently falls back to local search.
+`pnpm index-corpus` creates the `alien-holiday-rag` Pinecone document-schema index (managed AWS us-east-1, on-demand reads) if absent, embeds the ten public sources, upserts them, and waits until both search paths can retrieve them. Set `PINECONE_INDEX_NAME` to use another compatible index. Rerun indexing after changing `corpus.json`; each snapshot has a content-hashed namespace, so removed documents cannot appear in the new snapshot. Old namespaces remain until explicitly cleaned up in Pinecone. Chat never creates an index or silently falls back to local search.
 
 `pnpm test` checks retrieval orchestration with fixture HTTP responses; `pnpm typecheck` checks TypeScript; `pnpm build` builds the frontend only. The chat API runs in the Vite development server, not `vite preview`. This is not a production deployment: keep access restricted to a trusted demo audience. OpenAI and Pinecone calls can incur usage charges. Keys stay server-side and must never use a `VITE_` prefix. Native BM25 requires Pinecone API 2026-07 (Node SDK v9).
 
@@ -27,9 +27,17 @@ pnpm dev
 7. The `gpt-5.4-mini` agent reads the tool results, may search again, and answers with source IDs. Change `OPENAI_MODEL` to use another compatible OpenAI reasoning model.
 8. The trace exposes semantic and keyword ranks/scores, the fused ranking, reranker scores, original passages, model context, and response. Scores are not answer confidence. There is no relevance cutoff or automatic Notion synchronization. RAG supplies evidence; it does not guarantee correct answers or train the model.
 
-With just seven documents, dense top-ten search already includes the entire corpus. This demonstrates a real hybrid pipeline, not evidence that hybrid search improves recall on this tiny dataset. Measure that benefit with a larger corpus and labeled queries. Reranking adds a hosted model call and latency; it cannot recover evidence absent from the candidate set.
+With just ten documents, dense top-ten search already includes the entire corpus. This demonstrates a real hybrid pipeline, not evidence that hybrid search improves recall on this tiny dataset. Measure that benefit with a larger corpus and labeled queries. Reranking adds a hosted model call and latency; it cannot recover evidence absent from the candidate set.
 
-The source is the [Alien Holiday Warehouse Notion page](https://www.notion.so/3f0bebc723c381cb9d11d8c517ae1013), snapshotted October 13, 2026. That page has nine seed passages, not its planned 500 documents. This demo includes only seven current public passages; the retired 31-day return policy and private Nebula Noodle addendum are deliberately not indexed. This is scope-safe corpus selection, not an implementation of tenant authentication. Original skill files remain as archive examples and are not exposed to the agent.
+The original seven passages come from the [Alien Holiday Warehouse Notion page](https://www.notion.so/3f0bebc723c381cb9d11d8c517ae1013), snapshotted October 13, 2026. That page has nine seed passages, not its planned 500 documents. The retired 31-day return policy and private Nebula Noodle addendum are deliberately not indexed. Three fictional demo catalog records were added locally on October 19, 2026; they are not claims from the Notion source. This is scope-safe corpus selection, not an implementation of tenant authentication. Original skill files remain as archive examples and are not exposed to the agent.
+
+## Product photos
+
+Ask **“Show me three alien party costumes with pictures.”** The catalog adds Green Visitor GV-1, Cosmic Party CP-2, and Cosmic Jester CJ-1. These are fictional demo products illustrated by existing, freely licensed Wikimedia Commons photos, not images generated for this demo or actual items for sale. No prices, availability, or delivery promises are supplied.
+
+Each catalog passage contains a structured `product` payload with its SKU, display description, local photo path, alt text, and attribution/license links. Pinecone stores that payload as a JSON metadata string alongside the searchable product description. Search returns it with the original evidence; the frontend displays cards only for product records cited in that answer and deduplicates repeated searches. The model does not generate image URLs, and these are text embeddings with image references—not image embeddings or image-based search. The existing SS-3 and other imaginary operating-guide products have no photos; unrelated costume images must not be presented as depictions of them.
+
+Images are bundled under `public/images/` rather than hotlinked. Cards show just the photo, name, and description; a single Photo credits link below the gallery opens the [full attribution and transformation details](public/images/ATTRIBUTION.md) shipped with the assets. Keep the CC BY/CC BY-SA image terms when reusing them.
 
 ## Useful demo questions and independent expected facts
 

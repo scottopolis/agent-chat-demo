@@ -22,6 +22,7 @@ import remarkGfm from 'remark-gfm';
 import { isAgentContextPart, type AgentContextSnapshot } from './agent-context.js';
 import type { AgentToolDefinition } from './agent-tools.js';
 import { isMCPTracePart, type MCPTraceSnapshot } from './mcp-trace.js';
+import { getCitedProducts } from './products.js';
 
 const agentDescription = 'Ask about alien costumes. Inspect the search results and see how retrieved evidence becomes the agent’s context.';
 
@@ -83,7 +84,7 @@ function ChatPanel() {
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 font-mono text-[11px] text-slate-500 sm:block">
-            7 public sources · Pinecone · hybrid + reranker
+            10 public sources · Pinecone · hybrid + reranker
           </span>
           <button
             type="button"
@@ -297,7 +298,7 @@ function AgentToolsPanel() {
 }
 
 function EmptyState({ onPrompt }: { onPrompt: (value: string) => void }) {
-  const prompts = ['Can I wear SS-3 at Mosslight, and how long will it run?', 'Can my Venus mist pod refill my Neptune cape?', 'Can you repair my spaceship’s warp engine?'];
+  const prompts = ['Show me three alien party costumes with pictures.', 'Can I wear SS-3 at Mosslight, and how long will it run?', 'Can my Venus mist pod refill my Neptune cape?'];
   return (
     <div className="mx-auto flex h-full max-w-xl flex-col items-center justify-center py-20 text-center">
       <span className="grid size-14 place-items-center rounded-2xl border border-blue-200 bg-blue-50 text-blue-600">
@@ -318,6 +319,7 @@ function EmptyState({ onPrompt }: { onPrompt: (value: string) => void }) {
 
 function ChatMessage({ message }: { message: UIMessage }) {
   const user = message.role === 'user';
+  const products = user ? [] : getCitedProducts(message);
   return (
     <article className={user ? 'flex justify-end' : ''}>
       <div className={user ? 'max-w-[85%] rounded-2xl rounded-br-md bg-blue-600 px-4 py-3 text-sm leading-6 text-white' : 'min-w-0 space-y-3'}>
@@ -345,6 +347,26 @@ function ChatMessage({ message }: { message: UIMessage }) {
           }
           return null;
         })}
+        {products.length > 0 ? (
+          <section aria-label="Products from cited sources" className="mt-5 space-y-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-1">
+              <h3 className="text-sm font-semibold text-slate-900">Costume inspiration</h3>
+              <p className="text-[11px] text-slate-500">Fictional catalog · real illustrative photos</p>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {products.map(({ product }) => (
+                <figure key={product.sku} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+                  <img src={product.imagePath} alt={product.imageAlt} width={960} height={640} className="aspect-[4/3] w-full bg-slate-100 object-contain" />
+                  <figcaption className="space-y-2 p-4">
+                    <h4 className="text-sm font-semibold text-slate-900">{product.name}</h4>
+                    <p className="text-xs leading-5 text-slate-600">{product.description}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <a href="/images/ATTRIBUTION.md" target="_blank" rel="noreferrer" className="inline-block text-[10px] text-slate-500 underline underline-offset-2">Photo credits</a>
+          </section>
+        ) : null}
       </div>
     </article>
   );
